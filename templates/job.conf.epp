@@ -60,7 +60,7 @@ Job {
   <%- if $selection_pattern { -%>
     Selection Pattern = <%= $selection_pattern %>
   <%- } -%>
-  <% if $enabled { -%>
+  <% if $enabled != undef { -%>
     Enabled          = <%= $enabled %>
   <% } -%>
 <% } -%>
