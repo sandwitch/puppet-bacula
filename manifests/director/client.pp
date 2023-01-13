@@ -9,6 +9,7 @@
 # @param password       The password to be used when establishing a connection with the File services
 # @param file_retention The File Retention directive defines the length of time that Bacula will keep File records in the Catalog database after the End time of the Job corresponding to the File records
 # @param job_retention  The Job Retention directive defines the length of time that Bacula will keep Job records in the Catalog database after the Job End time
+# @param max_concurrent_jobs The maximum number of Jobs with the current Client that can run concurrently
 # @param autoprune      If AutoPrune is set to yes, Bacula will automatically apply the File retention period and the Job retention period for the Client at the end of the Job
 # @param conf_dir       The path to the bacula configuration directory
 #
@@ -30,15 +31,17 @@ define bacula::director::client (
   Bacula::Time            $job_retention,
   Bacula::Yesno           $autoprune,
   String                  $conf_dir = $bacula::conf_dir,
+  Optional[Integer]       $max_concurrent_jobs = 2,
 ) {
   $epp_client_variables = {
-    name           => $name,
-    address        => $address,
-    port           => $port,
-    password       => $password,
-    file_retention => $file_retention,
-    job_retention  => $job_retention,
-    autoprune      => $autoprune,
+    name                => $name,
+    address             => $address,
+    port                => $port,
+    password            => $password,
+    file_retention      => $file_retention,
+    job_retention       => $job_retention,
+    autoprune           => $autoprune,
+    max_concurrent_jobs => $max_concurrent_jobs,
   }
 
   concat::fragment { "bacula-director-client-${name}":
