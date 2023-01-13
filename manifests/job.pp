@@ -138,6 +138,7 @@ define bacula::job (
     reschedule_times    => $reschedule_times,
     write_bootstrap     => $write_bootstrap,
     max_full_interval   => $max_full_interval,
+    client              =. $client,
     enabled             => $enabled,
     runbeforejob        => $runbeforejob,
     runafterjob         => $runafterjob,
