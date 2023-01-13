@@ -14,6 +14,8 @@
 # @param media_type    Bacula director configuration for Storage option 'Media Type'
 # @param maxconcurjobs Bacula director configuration for Storage option 'Maximum Concurrent Jobs'
 # @param conf_dir      Bacula configuration directory
+# @param autochanger      When you use the label command or the add command to create a new Volume, Bacula will also request the Autochanger Slot number
+# @param allowcompression This will cause backups jobs running on this storage resource to run without client File Daemon compression
 #
 define bacula::director::storage (
   String  $address       = $name,
@@ -23,6 +25,9 @@ define bacula::director::storage (
   String  $media_type    = 'File',
   Integer $maxconcurjobs = 1,
   String  $conf_dir      = $bacula::conf_dir,
+  Optional[Bacula::Yesno] $autochanger      = undef,
+  Optional[Bacula::Yesno] $allowcompression = undef,
+
 ) {
   $epp_storage_variables = {
     name          => $name,
@@ -32,6 +37,10 @@ define bacula::director::storage (
     device_name   => $device_name,
     media_type    => $media_type,
     maxconcurjobs => $maxconcurjobs,
+    autochanger      => $autochanger,
+    allowcompression => $allowcompression,
+
+
   }
 
   concat::fragment { "bacula-director-storage-${name}":

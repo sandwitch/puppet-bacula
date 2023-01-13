@@ -7,6 +7,8 @@
     String $device_name,
     String $media_type,
     Integer $maxconcurjobs,
+    Optional[Bacula::Yesno] $autochanger,
+    Optional[Bacula::Yesno] $allowcompression,
   |
 -%>
 Storage {
@@ -17,6 +19,13 @@ Storage {
     Device     = <%= $device_name %>
     Media Type = <%= $media_type %>
     Maximum Concurrent Jobs = <%= $maxconcurjobs %>
+<% if $allowcompression { -%>
+    AllowCompression = <%= $allowcompression %>
+<% } -%>
+<% if $autochanger { -%>
+    Autochanger = <%= $autochanger %>
+<% } -%>
+
 <%= epp('bacula/_tls_client.epp') -%>
 }
 
