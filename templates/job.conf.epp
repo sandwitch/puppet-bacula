@@ -24,13 +24,20 @@
     Integer                  $reschedule_times,
     Optional[String]         $write_bootstrap,
     Optional[String]         $max_full_interval,
+    Optional[String]         $client,
     Optional[Bacula::Yesno]  $enabled,
+    Optional[String]         $runbeforejob,
+    Optional[String]         $runafterjob,
   |
 -%>
 Job {
     Name             = <%= $name %>
     Type             = <%= $jobtype %>
+<% if $client { -%>
+    Client           = <%= $client %>-fd
+<% } else { -%>
     Client           = <%= $clientcert %>-fd
+<% } -%>
     FileSet          = <%= $fileset_real %>
 <% if $pool { -%>
     Pool             = <%= $pool %>
@@ -60,13 +67,16 @@ Job {
   <%- if $selection_pattern { -%>
     Selection Pattern = <%= $selection_pattern %>
   <%- } -%>
-  <% if $enabled != undef { -%>
-    Enabled          = <%= $enabled %>
-  <% } -%>
 <% } -%>
 
 <% if $jobdef { -%>
     JobDefs          = "<%= $jobdef %>"
+<% } -%>
+<% if $runbeforejob { -%>
+    Run Before Job   = "<%= $runbeforejob %>"
+<% } -%>
+<% if $runafterjob { -%>
+    Run After Job    = "<%= $runafterjob %>"
 <% } -%>
 <% $runscript.each |$script| { -%>
     RunScript {
@@ -111,6 +121,8 @@ Job {
 <% if $max_full_interval { -%>
     Max Full Interval = <%= $max_full_interval %>
 <% } -%>
+<% if $enabled != undef { -%>
+    Enabled          = <%= $enabled %>
+<% } -%>
 
 }
-
