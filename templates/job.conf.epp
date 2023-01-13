@@ -24,6 +24,7 @@
     Integer                  $reschedule_times,
     Optional[String]         $write_bootstrap,
     Optional[String]         $max_full_interval,
+    Optional[Bacula::Yesno]  $enabled,
   |
 -%>
 Job {
@@ -59,6 +60,9 @@ Job {
   <%- if $selection_pattern { -%>
     Selection Pattern = <%= $selection_pattern %>
   <%- } -%>
+  <% if $enabled { -%>
+    Enabled          = <%= $enabled %>
+  <% } -%>
 <% } -%>
 
 <% if $jobdef { -%>
