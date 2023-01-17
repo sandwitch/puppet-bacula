@@ -26,6 +26,7 @@
 # @param rundir              Bacula Director option for 'Pid Directory'
 # @param storage_name        The Name of the Storage daemon
 # @param make_bacula_tables  Path to the script that loads the database schema
+# @param start_enable_services Should services be enabled and started
 #
 # @example
 #   class { 'bacula::director':
@@ -38,26 +39,27 @@ class bacula::director (
   Hash[String, Bacula::Message] $messages,
   Array[String]                 $packages,
   String                        $services,
-  String                        $make_bacula_tables,
-  Bacula::Yesno                 $manage_db           = true,
-  String                        $conf_dir            = $bacula::conf_dir,
-  String                        $db_name             = 'bacula',
-  String                        $db_pw               = 'notverysecret',
-  String                        $db_user             = 'bacula',
-  Optional[String]              $db_address          = undef,
-  Optional[String]              $db_port             = undef,
-  String                        $director_address    = $bacula::director_address,
-  String                        $director            = $trusted['certname'], # director here is not bacula::director
-  String                        $group               = $bacula::bacula_group,
-  String                        $homedir             = $bacula::homedir,
-  Optional[String]              $job_tag             = $bacula::job_tag,
-  Array[String[1]]              $listen_address      = [],
-  Integer                       $max_concurrent_jobs = 20,
-  Boolean                       $manage_defaults     = true,
-  String                        $password            = 'secret',
-  Integer                       $port                = 9101,
-  String                        $rundir              = $bacula::rundir,
-  String                        $storage_name        = $bacula::storage_name,
+  Bacula::Yesno                 $manage_db              = true,
+  String                        $conf_dir               = $bacula::conf_dir,
+  String                        $db_name                = 'bacula',
+  String                        $db_pw                  = 'notverysecret',
+  String                        $db_user                = 'bacula',
+  Optional[String]              $db_address             = undef,
+  Optional[String]              $db_port                = undef,
+  String                        $director_address       = $bacula::director_address,
+  String                        $director               = $trusted['certname'], # director here is not bacula::director
+  String                        $group                  = $bacula::bacula_group,
+  String                        $homedir                = $bacula::homedir,
+  Optional[String]              $job_tag                = $bacula::job_tag,
+  Array[String[1]]              $listen_address         = [],
+  Integer                       $max_concurrent_jobs    = 20,
+  Boolean                       $manage_defaults        = true,
+  String                        $password               = 'secret',
+  Integer                       $port                   = 9101,
+  String                        $rundir                 = $bacula::rundir,
+  String                        $storage_name           = $bacula::storage_name,
+  String                        $make_bacula_tables     = '',
+  Boolean                       $start_enable_services  = true,
 ) inherits bacula {
   if $manage_defaults {
     include bacula::director::defaults
@@ -87,10 +89,27 @@ class bacula::director (
   }
   ensure_packages($package_names)
 
-  service { $services:
-    ensure  => running,
-    enable  => true,
-    require => Package[$package_names],
+
+  case $start_enable_services {
+    true: {
+      service { $services:
+      ensure     => running,
+      enable     => true,
+      hasrestart => false,
+      restart    => '/sbin/bacula-dir -t && echo "reload" | /sbin/bconsole',
+      require    => Package[$package_names],
+      }
+    }
+    false: {
+      service { $services:
+      ensure  => stopped,
+      enable  => false,
+      require => Package[$package_names],
+      }
+    }
+    default: {
+    fail('You should choose a value for starr_enable_services')
+    }
   }
 
   file { "${conf_dir}/conf.d":

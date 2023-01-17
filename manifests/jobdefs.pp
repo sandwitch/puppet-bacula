@@ -34,6 +34,7 @@ define bacula::jobdefs (
   Integer          $max_concurrent_jobs      = 1,
   Optional[String] $write_bootstrap          = undef,
   Optional[String] $max_full_interval        = undef,
+  Optional[Bacula::Yesno] $spooldata         = undef,
 ) {
   include bacula
   $conf_dir = $bacula::conf_dir
@@ -55,6 +56,7 @@ define bacula::jobdefs (
     reschedule_times          => $reschedule_times,
     write_bootstrap           => $write_bootstrap,
     max_full_interval         => $max_full_interval,
+    spooldata                 => $spooldata,
   }
 
   concat::fragment { "bacula-jobdefs-${name}":

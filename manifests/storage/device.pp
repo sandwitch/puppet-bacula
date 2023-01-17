@@ -18,6 +18,14 @@
 # @param device_seltype  SELinux type for the device
 # @param director_name   Name of the Director allowed to connect to the Storage daemon
 # @param group           The posix group for bacula
+# @param drive_index
+# @param volume_poll_interval
+# @param autochanger
+# @param maximum_spool_size
+# @param maximum_file_size
+# @param spool_directory
+# @param alert_command
+##TODO: document the above parameters!
 #
 define bacula::storage::device (
   String           $device_name     = $name,
@@ -35,17 +43,32 @@ define bacula::storage::device (
   String           $device_seltype  = $bacula::device_seltype,
   String           $director_name   = $bacula::director_name,
   String           $group           = $bacula::bacula_group,
+  Optional[Integer]       $drive_index          = undef,
+  Optional[Integer]       $volume_poll_interval = undef,
+  Optional[Bacula::Yesno] $autochanger          = undef,
+  Optional[String]        $maximum_spool_size   = undef,
+  Optional[String]        $maximum_file_size    = undef,
+  Optional[String]        $spool_directory      = undef,
+  Optional[String]        $alert_command        = undef,
 ) {
   $epp_device_variables = {
-    device_name     => $device_name,
-    media_type      => $media_type,
-    device          => $device,
-    label_media     => $label_media,
-    random_access   => $random_access,
-    automatic_mount => $automatic_mount,
-    removable_media => $removable_media,
-    always_open     => $always_open,
-    maxconcurjobs   => $maxconcurjobs,
+    device_name          => $device_name,
+    media_type           => $media_type,
+    device               => $device,
+    label_media          => $label_media,
+    random_access        => $random_access,
+    automatic_mount      => $automatic_mount,
+    removable_media      => $removable_media,
+    always_open          => $always_open,
+    maxconcurjobs        => $maxconcurjobs,
+    drive_index          => $drive_index,
+    volume_poll_interval => $volume_poll_interval,
+    autochanger          => $autochanger,
+    maximum_spool_size   => $maximum_spool_size,
+    maximum_file_size    => $maximum_file_size,
+    spool_directory      => $spool_directory,
+    alert_command        => $alert_command,
+
   }
 
   concat::fragment { "bacula-storage-device-${name}":

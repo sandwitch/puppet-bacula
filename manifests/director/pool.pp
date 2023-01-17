@@ -29,34 +29,36 @@
 #   }
 #
 define bacula::director::pool (
-  Optional[String]                  $volret         = undef,
-  Optional[Variant[String,Integer]] $maxvoljobs     = undef, # FIXME: Remove String
-  Optional[Bacula::Size]            $maxvolbytes    = undef,
-  Optional[Variant[String,Integer]] $maxvols        = undef, # FIXME: Remove String
-  Optional[String]                  $label          = undef,
-  Optional[String]                  $voluseduration = undef,
-  String                            $storage        = $bacula::director::storage,
-  String                            $pooltype       = 'Backup',
-  Bacula::Yesno                     $recycle        = true,
-  Bacula::Yesno                     $autoprune      = true,
-  String                            $purgeaction    = 'Truncate',
-  Optional[String]                  $next_pool      = undef,
-  String                            $conf_dir       = $bacula::conf_dir,
+  Optional[String]                  $volret              = undef,
+  Optional[Variant[String,Integer]] $maxvoljobs          = undef, # FIXME: Remove String
+  Optional[Bacula::Size]            $maxvolbytes         = undef,
+  Optional[Variant[String,Integer]] $maxvols             = undef, # FIXME: Remove String
+  Optional[String]                  $label               = undef,
+  Optional[String]                  $voluseduration      = undef,
+  String                            $storage             = $bacula::director::storage,
+  String                            $pooltype            = 'Backup',
+  Bacula::Yesno                     $recycle             = true,
+  Bacula::Yesno                     $autoprune           = true,
+  String                            $purgeaction         = 'Truncate',
+  Optional[String]                  $next_pool           = undef,
+  String                            $conf_dir            = $bacula::conf_dir,
+  Optional[Bacula::Yesno]           $recycleoldestvolume = undef,
 ) {
   $epp_pool_variables = {
-    name           => $name,
-    pooltype       => $pooltype,
-    recycle        => $recycle,
-    autoprune      => $autoprune,
-    volret         => $volret,
-    voluseduration => $voluseduration,
-    label          => $label,
-    maxvols        => $maxvols,
-    maxvoljobs     => $maxvoljobs,
-    maxvolbytes    => $maxvolbytes,
-    storage        => $storage,
-    purgeaction    => $purgeaction,
-    next_pool      => $next_pool,
+    name                => $name,
+    pooltype            => $pooltype,
+    recycle             => $recycle,
+    autoprune           => $autoprune,
+    volret              => $volret,
+    voluseduration      => $voluseduration,
+    label               => $label,
+    maxvols             => $maxvols,
+    maxvoljobs          => $maxvoljobs,
+    maxvolbytes         => $maxvolbytes,
+    storage             => $storage,
+    purgeaction         => $purgeaction,
+    next_pool           => $next_pool,
+    recycleoldestvolume => $recycleoldestvolume,
   }
 
   concat::fragment { "bacula-director-pool-${name}":
