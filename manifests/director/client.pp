@@ -31,7 +31,7 @@ define bacula::director::client (
   Bacula::Time            $job_retention,
   Bacula::Yesno           $autoprune,
   String                  $conf_dir = $bacula::conf_dir,
-  Optional[Integer]       $max_concurrent_jobs = 2,
+  Integer                 $max_concurrent_jobs = 2,
 ) {
   $epp_client_variables = {
     name                => $name,
