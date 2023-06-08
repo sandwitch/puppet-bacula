@@ -17,6 +17,7 @@
 # @param max_concurrent_jobs      Maximum number of Jobs from the current Job resource that can run concurrently
 # @param write_bootstrap          The writebootstrap directive specifies a file name where Bacula will write a bootstrap file for each Backup job run
 # @param max_full_interval        The time specifies the maximum allowed age (counting from start time) of the most recent successful Full backup that is required in order to run Incremental or Differential backup jobs. f the most recent Full backup is older than this interval, Incremental and Differential backups will be upgraded to Full backups automatically. 
+# @param spooldata #FIXME wat is dit?
 #
 define bacula::jobdefs (
   Bacula::JobType  $jobtype                  = 'Backup',
