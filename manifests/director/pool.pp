@@ -17,6 +17,7 @@
 # @param purgeaction    Bacula pool configuration option "Action On Purge"
 # @param next_pool      Bacula pool configuration option "Next Pool"
 # @param conf_dir       The path to the bacula configuration directory
+# @param recycleoldestvolume Wat is dit? #FIXME
 #
 # @example
 #   bacula::director::pool {
