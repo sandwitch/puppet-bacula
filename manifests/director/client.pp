@@ -23,7 +23,7 @@
 #     tag            => "bacula-${director_name}",
 #   }
 #
-define   (
+define bacula::director::client (
   String                  $address,
   Variant[String,Integer] $port, # FIXME: Remove String
   String                  $password,
