@@ -3,7 +3,7 @@
     String $name,
     String $address,
     Integer $port,
-    Sensitive[String] $password,
+    String  $password,
     Bacula::Time $file_retention,
     Bacula::Time $job_retention,
     Bacula::Yesno $autoprune,
