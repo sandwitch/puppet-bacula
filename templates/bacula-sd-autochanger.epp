@@ -1,0 +1,15 @@
+<%
+  |
+    String                   $autochanger_name,
+    String                   $changer_device,
+    String                   $changer_command,
+    String                   $device,
+  |
+-%>
+Autochanger {
+    Name                 = <%= $autochanger_name%>
+    Changer Device       = <%= $changer_device %>
+    Changer Command      = "<%= $changer_command %>"
+    Device               = <%= $device %>
+}
+
