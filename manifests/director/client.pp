@@ -24,14 +24,13 @@
 #   }
 #
 define bacula::director::client (
-  String                  $address,
-  Variant[String,Integer] $port, # FIXME: Remove String
-  String                  $password,
-  Bacula::Time            $file_retention,
-  Bacula::Time            $job_retention,
-  Bacula::Yesno           $autoprune,
-  String                  $conf_dir = $bacula::conf_dir,
-  Integer                 $max_concurrent_jobs = 2,
+  String[1]                       $address,
+  Variant[String[1],Stdlib::Port] $port, # FIXME: Remove String
+  Bacula::Password                $password,
+  Bacula::Time                    $file_retention,
+  Bacula::Time                    $job_retention,
+  Bacula::Yesno                   $autoprune,
+  Stdlib::Absolutepath            $conf_dir = $bacula::conf_dir,
 ) {
   $epp_client_variables = {
     name                => $name,

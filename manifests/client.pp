@@ -2,7 +2,9 @@
 #
 # This class installs and configures the File Daemon to backup a client system.
 #
+# @param messages            Logging configuration; loaded from hiera
 # @param packages            A list of packages to install; loaded from hiera
+# @param ensure              What state the package should be in.
 # @param services            A list of services to operate; loaded from hiera
 # @param default_pool        The name of the Pool for this FD to use by default
 # @param default_pool_full   The name of the Pool to use for Full jobs
@@ -51,34 +53,36 @@
 #   class { 'bacula::client': director_name => 'mydirector.example.com' }
 #
 class bacula::client (
-  Array[String]           $packages,
-  String                  $services,
-  String                  $default_pool,
-  Optional[String]        $default_pool_full,
-  Optional[String]        $default_pool_inc,
-  Optional[String]        $default_pool_diff,
-  String                  $password,
-  Integer                 $port                = 9102,
-  Array[String[1]]        $listen_address      = [],
-  Integer                 $max_concurrent_jobs = 2,
-  String                  $director_name       = $bacula::director_name,
-  Bacula::Yesno           $autoprune           = true,
-  Bacula::Time            $file_retention      = '45 days',
-  Bacula::Time            $job_retention       = '6 months',
-  String                  $client              = $trusted['certname'],
-  String                  $address             = $facts['networking']['fqdn'],
-  Optional[Bacula::Yesno] $pki_signatures      = undef,
-  Optional[Bacula::Yesno] $pki_encryption      = undef,
-  Optional[String]        $pki_keypair         = undef,
-  Optional[String]        $pki_master_key      = undef,
-  Optional[String]        $plugin_dir          = undef,
+  Hash[String, Bacula::Message]  $messages,
+  Array[String[1]]               $packages,
+  String[1]                      $services,
+  String[1]                      $default_pool,
+  Optional[String[1]]            $default_pool_full,
+  Optional[String[1]]            $default_pool_inc,
+  Optional[String[1]]            $default_pool_diff,
+  String[1]                      $ensure              = 'present',
+  Stdlib::Port                   $port                = 9102,
+  Array[String[1]]               $listen_address      = [],
+  Bacula::Password               $password            = 'secret',
+  Integer[1]                     $max_concurrent_jobs = 2,
+  String[1]                      $director_name       = $bacula::director_name,
+  Bacula::Yesno                  $autoprune           = true,
+  Bacula::Time                   $file_retention      = '45 days',
+  Bacula::Time                   $job_retention       = '6 months',
+  String[1]                      $client              = $trusted['certname'],
+  String[1]                      $address             = $facts['networking']['fqdn'],
+  Optional[Bacula::Yesno]        $pki_signatures      = undef,
+  Optional[Bacula::Yesno]        $pki_encryption      = undef,
+  Optional[Stdlib::Absolutepath] $pki_keypair         = undef,
+  Optional[Stdlib::Absolutepath] $pki_master_key      = undef,
+  Optional[Stdlib::Absolutepath] $plugin_dir          = undef,
 ) inherits bacula {
   $group    = $bacula::bacula_group
   $conf_dir = $bacula::conf_dir
   $config_file = "${conf_dir}/bacula-fd.conf"
 
   package { $packages:
-    ensure => present,
+    ensure => $ensure,
   }
 
   service { $services:
@@ -103,12 +107,7 @@ class bacula::client (
     content => epp('bacula/bacula-fd-header.epp'),
   }
 
-  bacula::messages { 'Standard-fd':
-    daemon   => 'fd',
-    director => "${director_name}-dir = all, !skipped, !restored",
-    append   => '"/var/log/bacula/bacula-fd.log" = all, !skipped',
-  }
-
+  create_resources(bacula::messages, $messages)
   # Tell the director about this client config
   @@bacula::director::client { $client:
     address        => $address,

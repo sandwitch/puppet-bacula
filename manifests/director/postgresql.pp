@@ -8,10 +8,10 @@
 # @param db_user            The database user
 #
 class bacula::director::postgresql (
-  String $make_bacula_tables = $bacula::director::make_bacula_tables,
-  String $db_name            = $bacula::director::db_name,
-  String $db_pw              = $bacula::director::db_pw,
-  String $db_user            = $bacula::director::db_user,
+  String[1]        $make_bacula_tables = $bacula::director::make_bacula_tables,
+  String[1]        $db_name            = $bacula::director::db_name,
+  Bacula::Password $db_pw              = $bacula::director::db_pw,
+  String[1]        $db_user            = $bacula::director::db_user,
 ) {
   include bacula
 
@@ -22,15 +22,16 @@ class bacula::director::postgresql (
     require postgresql::server
     postgresql::server::db { $db_name:
       user     => $db_user,
-      password => postgresql_password($db_user, $db_pw),
+      password => postgresql::postgresql_password($db_user, $db_pw),
       encoding => 'SQL_ASCII',
       locale   => 'C',
-      before   => Exec["/bin/sh ${make_bacula_tables}"],
-      notify   => Exec["/bin/sh ${make_bacula_tables}"],
+      before   => Exec['make_bacula_tables'],
+      notify   => Exec['make_bacula_tables'],
     }
   }
 
-  exec { "/bin/sh ${make_bacula_tables}":
+  exec { 'make_bacula_tables':
+    command     => ['/bin/sh', $make_bacula_tables],
     user        => $user,
     refreshonly => true,
     environment => ["db_name=${db_name}"],

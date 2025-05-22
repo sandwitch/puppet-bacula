@@ -4,7 +4,61 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v6.0.0](https://github.com/voxpupuli/puppet-bacula/tree/v6.0.0) (2022-10-05)
+## [v8.1.0](https://github.com/voxpupuli/puppet-bacula/tree/v8.1.0) (2025-01-28)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-bacula/compare/v8.0.0...v8.1.0)
+
+**Implemented enhancements:**
+
+- Adding an option for the bacula file daemon to support custom message types [\#219](https://github.com/voxpupuli/puppet-bacula/pull/219) ([mi-reichel](https://github.com/mi-reichel))
+- add $ensure parameter for all package operations [\#216](https://github.com/voxpupuli/puppet-bacula/pull/216) ([fraenki](https://github.com/fraenki))
+- Add support for FreeBSD 14 [\#211](https://github.com/voxpupuli/puppet-bacula/pull/211) ([smortex](https://github.com/smortex))
+- Improve data types [\#193](https://github.com/voxpupuli/puppet-bacula/pull/193) ([smortex](https://github.com/smortex))
+
+**Fixed bugs:**
+
+- Adopt new service names on FreeBSD [\#220](https://github.com/voxpupuli/puppet-bacula/pull/220) ([fraenki](https://github.com/fraenki))
+
+## [v8.0.0](https://github.com/voxpupuli/puppet-bacula/tree/v8.0.0) (2024-07-17)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-bacula/compare/v7.0.0...v8.0.0)
+
+**Breaking changes:**
+
+- Drop Ubuntu 18.04 support [\#200](https://github.com/voxpupuli/puppet-bacula/pull/200) ([Valantin](https://github.com/Valantin))
+- Drop Debian 10 support [\#198](https://github.com/voxpupuli/puppet-bacula/pull/198) ([Valantin](https://github.com/Valantin))
+
+**Implemented enhancements:**
+
+- Add RedHat 9 support [\#202](https://github.com/voxpupuli/puppet-bacula/pull/202) ([Valantin](https://github.com/Valantin))
+- Add CentOS 9 support [\#201](https://github.com/voxpupuli/puppet-bacula/pull/201) ([Valantin](https://github.com/Valantin))
+- Add ubuntu 22.04 support [\#199](https://github.com/voxpupuli/puppet-bacula/pull/199) ([Valantin](https://github.com/Valantin))
+- Add Debian 12 support [\#197](https://github.com/voxpupuli/puppet-bacula/pull/197) ([Valantin](https://github.com/Valantin))
+- puppetlabs/postgresql: Allow 10.x [\#196](https://github.com/voxpupuli/puppet-bacula/pull/196) ([zilchms](https://github.com/zilchms))
+
+**Merged pull requests:**
+
+- Drop code for unsupported OS [\#203](https://github.com/voxpupuli/puppet-bacula/pull/203) ([Valantin](https://github.com/Valantin))
+- Fix unsafe interpolation of variable [\#192](https://github.com/voxpupuli/puppet-bacula/pull/192) ([smortex](https://github.com/smortex))
+
+## [v7.0.0](https://github.com/voxpupuli/puppet-bacula/tree/v7.0.0) (2023-07-01)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-bacula/compare/v6.0.0...v7.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 6 support [\#182](https://github.com/voxpupuli/puppet-bacula/pull/182) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Add support for Puppet 8 [\#185](https://github.com/voxpupuli/puppet-bacula/pull/185) ([smortex](https://github.com/smortex))
+- Relax dependencies version requirements [\#184](https://github.com/voxpupuli/puppet-bacula/pull/184) ([smortex](https://github.com/smortex))
+
+**Merged pull requests:**
+
+- Use the namespaced function `postgresql::postgresql_password()` [\#186](https://github.com/voxpupuli/puppet-bacula/pull/186) ([smortex](https://github.com/smortex))
+
+## [v6.0.0](https://github.com/voxpupuli/puppet-bacula/tree/v6.0.0) (2022-10-06)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-bacula/compare/5.8.0...v6.0.0)
 
@@ -41,7 +95,7 @@ These should not affect the functionality of the module.
 
 **Implemented enhancements:**
 
-- Add job var "Max Full Interval" [\#159](https://github.com/voxpupuli/puppet-bacula/pull/159) ([xaque208](https://github.com/xaque208))
+- Add job var "Max Full Interval" [\#159](https://github.com/voxpupuli/puppet-bacula/pull/159) ([zachfi](https://github.com/zachfi))
 - Ensure all parameters are documented [\#151](https://github.com/voxpupuli/puppet-bacula/pull/151) ([smortex](https://github.com/smortex))
 
 **Fixed bugs:**

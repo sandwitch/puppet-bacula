@@ -4,6 +4,7 @@
 #
 # @param messages            Logging configuration; loaded from hiera
 # @param packages            A list of packages to install; loaded from hiera
+# @param ensure              What state the package should be in.
 # @param services            A list of services to operate; loaded from hiera
 # @param manage_db           Whether the module should manage the director database
 # @param conf_dir            Path to bacula configuration directory
@@ -36,30 +37,30 @@
 # @todo director_address is only used by bconsole, and is confusing as director is likely the same
 #
 class bacula::director (
-  Hash[String, Bacula::Message] $messages,
-  Array[String]                 $packages,
-  String                        $services,
-  Bacula::Yesno                 $manage_db              = true,
-  String                        $conf_dir               = $bacula::conf_dir,
-  String                        $db_name                = 'bacula',
-  String                        $db_pw                  = 'notverysecret',
-  String                        $db_user                = 'bacula',
-  Optional[String]              $db_address             = undef,
-  Optional[String]              $db_port                = undef,
-  String                        $director_address       = $bacula::director_address,
-  String                        $director               = $trusted['certname'], # director here is not bacula::director
-  String                        $group                  = $bacula::bacula_group,
-  String                        $homedir                = $bacula::homedir,
-  Optional[String]              $job_tag                = $bacula::job_tag,
-  Array[String[1]]              $listen_address         = [],
-  Integer                       $max_concurrent_jobs    = 20,
-  Boolean                       $manage_defaults        = true,
-  String                        $password               = 'secret',
-  Integer                       $port                   = 9101,
-  String                        $rundir                 = $bacula::rundir,
-  String                        $storage_name           = $bacula::storage_name,
-  String                        $make_bacula_tables     = '',
-  Boolean                       $start_enable_services  = true,
+  Hash[String[1], Bacula::Message] $messages,
+  Array[String[1]]                 $packages,
+  String[1]                        $services,
+  String[1]                        $make_bacula_tables,
+  String[1]                        $ensure              = 'present',
+  Bacula::Yesno                    $manage_db           = true,
+  Stdlib::Absolutepath             $conf_dir            = $bacula::conf_dir,
+  String[1]                        $db_name             = 'bacula',
+  Bacula::Password                 $db_pw               = 'notverysecret',
+  String[1]                        $db_user             = 'bacula',
+  Optional[String[1]]              $db_address          = undef,
+  Optional[Stdlib::Port]           $db_port             = undef,
+  String[1]                        $director_address    = $bacula::director_address,
+  String[1]                        $director            = $trusted['certname'], # director here is not bacula::director
+  String[1]                        $group               = $bacula::bacula_group,
+  Stdlib::Absolutepath             $homedir             = $bacula::homedir,
+  Optional[String[1]]              $job_tag             = $bacula::job_tag,
+  Array[String[1]]                 $listen_address      = [],
+  Integer[1]                       $max_concurrent_jobs = 20,
+  Boolean                          $manage_defaults     = true,
+  Bacula::Password                 $password            = 'secret',
+  Stdlib::Port                     $port                = 9101,
+  Stdlib::Absolutepath             $rundir              = $bacula::rundir,
+  String[1]                        $storage_name        = $bacula::storage_name,
 ) inherits bacula {
   if $manage_defaults {
     include bacula::director::defaults
@@ -87,7 +88,7 @@ class bacula::director (
       }
     )
   }
-  ensure_packages($package_names)
+  ensure_packages($package_names, { ensure => $ensure })
 
 
   case $start_enable_services {
